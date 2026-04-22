@@ -105,19 +105,19 @@ export default function ApplicationForm() {
           </p>
         </div>
 
-        {/* DEV: Test Button */}
-        <div className="mb-4 flex justify-end">
-          <button
-            type="button"
-            onClick={fillTestData}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono hover:bg-amber-500/20 transition-colors"
-          >
-            ⚡ Preencher dados de teste
-          </button>
-        </div>
-
         {/* Form */}
         <div ref={formRef} className="card-surface p-8 md:p-12">
+          {/* DEV: Test Button - Moved inside and below header */}
+          <div className="mb-8 flex justify-end">
+            <button
+              type="button"
+              onClick={fillTestData}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-mono hover:bg-amber-500/20 transition-colors"
+            >
+              ⚡ Preencher dados de teste
+            </button>
+          </div>
+
           {status === 'success' ? (
             <div className="text-center py-12">
               <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">

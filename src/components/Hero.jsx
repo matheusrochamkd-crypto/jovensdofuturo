@@ -48,9 +48,10 @@ export default function Hero() {
   }
 
   return (
-    <section
+    <section 
+      id="hero"
       ref={containerRef}
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden px-6 pt-24 pb-12"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden px-6 pt-32 pb-12"
     >
       {/* Radial Glow Background */}
       <div className="absolute inset-0 bg-deep-slate">

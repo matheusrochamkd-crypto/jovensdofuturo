@@ -27,9 +27,24 @@ export default function ProtocolScheduler() {
     const ctx = canvas.getContext('2d')
     const dpr = window.devicePixelRatio || 1
     
-    canvas.width = 360 * dpr
-    canvas.height = 250 * dpr
-    ctx.scale(dpr, dpr)
+    const resizeCanvas = () => {
+      const container = canvas.parentElement
+      if (!container) return
+      const width = container.clientWidth - 32 // internal padding
+      const height = 250
+      
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      
+      // Update nodes scale if needed or keep original 360 base?
+      // Let's stick to 360 base but scale the draw if width < 360
+      const scaleFactor = Math.min(width / 360, 1)
+      ctx.scale(scaleFactor, scaleFactor)
+    }
+
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
 
     let frame = 0
 
@@ -82,7 +97,10 @@ export default function ProtocolScheduler() {
     }
 
     draw()
-    return () => cancelAnimationFrame(animRef.current)
+    return () => {
+      cancelAnimationFrame(animRef.current)
+      window.removeEventListener('resize', resizeCanvas)
+    }
   }, [])
 
   return (
