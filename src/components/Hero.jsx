@@ -65,7 +65,7 @@ export default function Hero() {
       }} />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl w-full">
+      <div className="relative z-10 container-elite">
         {/* Main Headline */}
         <h1>
           <span

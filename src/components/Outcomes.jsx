@@ -51,7 +51,7 @@ export default function Outcomes() {
 
   return (
     <section id="outcomes" ref={sectionRef} className="section-padding">
-      <div className="max-w-6xl mx-auto">
+      <div className="container-elite">
         {/* Header */}
         <div className="text-center mb-16">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">

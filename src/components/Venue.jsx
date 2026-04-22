@@ -43,7 +43,7 @@ export default function Venue() {
 
   return (
     <section id="venue" ref={sectionRef} className="section-padding">
-      <div className="max-w-7xl mx-auto">
+      <div className="container-elite">
         {/* Header */}
         <div className="text-center mb-16 venue-content">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">

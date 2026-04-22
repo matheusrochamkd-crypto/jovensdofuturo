@@ -55,7 +55,7 @@ export default function Audience() {
 
   return (
     <section id="audience" ref={sectionRef} className="section-padding bg-black/20">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="container-elite">
         {/* Header */}
         <div className="text-center mb-24">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">

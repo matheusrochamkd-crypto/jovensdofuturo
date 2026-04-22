@@ -112,10 +112,10 @@ export default function ProtocolScheduler() {
       </div>
 
       {/* Network Graph */}
-      <div className="flex-1 min-h-[220px] bg-deep-slate rounded-xl border border-accent/5 flex items-center justify-center overflow-hidden">
+      <div className="flex-1 min-h-[220px] bg-deep-slate rounded-xl border border-accent/5 flex items-center justify-center overflow-hidden p-4">
         <canvas
           ref={canvasRef}
-          style={{ width: '360px', height: '250px' }}
+          style={{ width: '100%', height: '250px' }}
         />
       </div>
 

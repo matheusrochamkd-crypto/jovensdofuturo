@@ -30,7 +30,7 @@ export default function Brands() {
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 border-b border-accent/5 bg-deep-slate relative z-10">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="container-elite">
         <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.3em] block text-center mb-12">
           Instituições por trás do projeto
         </span>

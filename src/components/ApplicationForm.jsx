@@ -91,7 +91,7 @@ export default function ApplicationForm() {
 
   return (
     <section id="application-form" ref={sectionRef} className="section-padding">
-      <div className="max-w-3xl mx-auto">
+      <div className="container-elite max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">

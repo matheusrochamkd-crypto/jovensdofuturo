@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-accent/5 py-12 px-6">
-      <div className="max-w-6xl mx-auto">
+    <footer className="border-t border-accent/5 py-12">
+      <div className="container-elite">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Logo */}
           <div className="flex items-center gap-3">

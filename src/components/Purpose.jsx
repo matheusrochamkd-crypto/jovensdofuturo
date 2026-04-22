@@ -31,7 +31,7 @@ export default function Purpose() {
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
       
-      <div className="max-w-4xl mx-auto px-6 relative z-10" ref={contentRef}>
+      <div className="container-elite relative z-10" ref={contentRef}>
         <div className="flex flex-col items-center text-center">
           <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-8">
             <Heart className="w-6 h-6 text-accent animate-pulse" />

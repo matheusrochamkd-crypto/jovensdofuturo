@@ -67,7 +67,7 @@ export default function Schedule() {
 
   return (
     <section id="schedule" ref={sectionRef} className="section-padding bg-black/40">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="container-elite">
         {/* Header */}
         <div className="text-center mb-20">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">
