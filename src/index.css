@@ -197,7 +197,7 @@ textarea.input-elite {
    ═══════════════════════════════════════════════ */
 
 .section-padding {
-  padding: 8rem 1.5rem;
+  padding: 5rem 1.25rem;
 }
 
 @media (min-width: 768px) {
@@ -210,4 +210,23 @@ textarea.input-elite {
   .section-padding {
     padding: 12rem 4rem;
   }
+}
+
+/* Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.2s ease-in-out 0s 2;
+}
+
+.tracking-tight-custom {
+  letter-spacing: -0.04em;
+}
+
+.tracking-wide-custom {
+  letter-spacing: 0.1em;
 }

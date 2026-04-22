@@ -71,7 +71,7 @@ export default function Audience() {
         </div>
 
         {/* Z-Layout Rows */}
-        <div className="space-y-32 md:space-y-48">
+        <div className="space-y-24 md:space-y-48">
           {/* Item 1: Icon Left, Text Right */}
           <div
             ref={el => rowsRef.current[0] = el}

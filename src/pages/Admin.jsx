@@ -427,67 +427,101 @@ export default function Admin() {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-accent/5">
-                    <th onClick={() => handleSort('full_name')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors">
-                      <span className="flex items-center gap-1">Nome <SortIcon field="full_name" /></span>
-                    </th>
-                    <th onClick={() => handleSort('age')} className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden md:table-cell">
-                      <span className="flex items-center justify-center gap-1">Idade <SortIcon field="age" /></span>
-                    </th>
-                    <th className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider hidden md:table-cell">Gênero</th>
-                    <th onClick={() => handleSort('city')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden lg:table-cell">
-                      <span className="flex items-center gap-1">Cidade <SortIcon field="city" /></span>
-                    </th>
-                    <th className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider hidden lg:table-cell">Área</th>
-                    <th onClick={() => handleSort('created_at')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden xl:table-cell">
-                      <span className="flex items-center gap-1">Data <SortIcon field="created_at" /></span>
-                    </th>
-                    <th className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((c) => (
-                    <tr
-                      key={c.id}
-                      className="border-b border-accent/5 hover:bg-accent/[0.02] transition-colors"
-                    >
-                      <td className="p-4">
-                        <span className="text-white font-medium block">{c.full_name}</span>
-                        <span className="text-[10px] text-zinc-600 block mt-0.5">{c.email}</span>
-                      </td>
-                      <td className="p-4 text-center text-zinc-400 hidden md:table-cell">{c.age || '—'}</td>
-                      <td className="p-4 text-center text-zinc-400 hidden md:table-cell">
-                        {c.gender ? (
-                          <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] ${
-                            c.gender === 'masculino' ? 'bg-blue-400/10 text-blue-400' :
-                            c.gender === 'feminino' ? 'bg-pink-400/10 text-pink-400' :
-                            'bg-zinc-500/10 text-zinc-400'
-                          }`}>
-                            {genderLabels[c.gender]?.[0] || '?'}
-                          </span>
-                        ) : '—'}
-                      </td>
-                      <td className="p-4 text-zinc-400 hidden lg:table-cell">{c.city || '—'}</td>
-                      <td className="p-4 text-zinc-400 hidden lg:table-cell">{c.area || '—'}</td>
-                      <td className="p-4 text-zinc-500 hidden xl:table-cell">
-                        {new Date(c.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' })}
-                      </td>
-                      <td className="p-4 text-center">
-                        <button
-                          onClick={() => setSelectedCandidate(c)}
-                          className="p-2 rounded-lg bg-accent/5 text-accent/60 hover:bg-accent/10 hover:text-accent transition-colors"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                      </td>
+            <>
+              {/* Desktop View */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="border-b border-accent/5">
+                      <th onClick={() => handleSort('full_name')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors">
+                        <span className="flex items-center gap-1">Nome <SortIcon field="full_name" /></span>
+                      </th>
+                      <th onClick={() => handleSort('age')} className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden md:table-cell">
+                        <span className="flex items-center justify-center gap-1">Idade <SortIcon field="age" /></span>
+                      </th>
+                      <th className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider hidden md:table-cell">Gênero</th>
+                      <th onClick={() => handleSort('city')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden lg:table-cell">
+                        <span className="flex items-center gap-1">Cidade <SortIcon field="city" /></span>
+                      </th>
+                      <th className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider hidden lg:table-cell">Área</th>
+                      <th onClick={() => handleSort('created_at')} className="text-left p-4 text-accent/40 font-normal uppercase tracking-wider cursor-pointer hover:text-accent transition-colors hidden xl:table-cell">
+                        <span className="flex items-center gap-1">Data <SortIcon field="created_at" /></span>
+                      </th>
+                      <th className="text-center p-4 text-accent/40 font-normal uppercase tracking-wider">Ações</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {filtered.map((c) => (
+                      <tr
+                        key={c.id}
+                        className="border-b border-accent/5 hover:bg-accent/[0.02] transition-colors"
+                      >
+                        <td className="p-4">
+                          <span className="text-white font-medium block">{c.full_name}</span>
+                          <span className="text-[10px] text-zinc-600 block mt-0.5">{c.email}</span>
+                        </td>
+                        <td className="p-4 text-center text-zinc-400 hidden md:table-cell">{c.age || '—'}</td>
+                        <td className="p-4 text-center text-zinc-400 hidden md:table-cell">
+                          {c.gender ? (
+                            <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] ${
+                              c.gender === 'masculino' ? 'bg-blue-400/10 text-blue-400' :
+                              c.gender === 'feminino' ? 'bg-pink-400/10 text-pink-400' :
+                              'bg-zinc-500/10 text-zinc-400'
+                            }`}>
+                              {genderLabels[c.gender]?.[0] || '?'}
+                            </span>
+                          ) : '—'}
+                        </td>
+                        <td className="p-4 text-zinc-400 hidden lg:table-cell">{c.city || '—'}</td>
+                        <td className="p-4 text-zinc-400 hidden lg:table-cell">{c.area || '—'}</td>
+                        <td className="p-4 text-zinc-500 hidden xl:table-cell">
+                          {new Date(c.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                        </td>
+                        <td className="p-4 text-center">
+                          <button
+                            onClick={() => setSelectedCandidate(c)}
+                            className="p-2 rounded-lg bg-accent/5 text-accent/60 hover:bg-accent/10 hover:text-accent transition-colors"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden divide-y divide-accent/5">
+                {filtered.map((c) => (
+                  <div key={c.id} className="p-4 flex items-center justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-white font-medium truncate">{c.full_name}</span>
+                        <span className={`px-1.5 py-0.5 rounded-md text-[8px] border ${
+                          c.status === 'aprovado' ? 'bg-accent/10 text-accent border-accent/20' :
+                          c.status === 'rejeitado' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                          'bg-zinc-500/10 text-zinc-500 border-zinc-500/20'
+                        }`}>
+                          {c.status === 'aprovado' ? 'APV' : c.status === 'rejeitado' ? 'REJ' : 'PEND'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 text-[10px] text-zinc-500">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {c.city || 'SJP'}</span>
+                        <span className="flex items-center gap-1"><Briefcase className="w-3 h-3" /> {c.area || 'Diversos'}</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setSelectedCandidate(c)}
+                      className="p-3 rounded-xl bg-accent/5 text-accent/60 active:scale-95 transition-transform"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
           )}
         </div>
       </div>

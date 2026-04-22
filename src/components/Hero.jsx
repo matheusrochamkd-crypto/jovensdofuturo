@@ -50,33 +50,33 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden pt-24 pb-12 sm:pt-32"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center text-center overflow-hidden px-6 pt-24 pb-12"
     >
       {/* Radial Glow Background */}
       <div className="absolute inset-0 bg-deep-slate">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/20 blur-[200px] animate-pulse-glow" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/5 blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[800px] md:h-[800px] rounded-full bg-primary/20 blur-[100px] md:blur-[200px] animate-pulse-glow" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[150px] md:w-[600px] md:h-[300px] bg-accent/5 blur-[80px] md:blur-[150px]" />
       </div>
 
       {/* Grid Pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'linear-gradient(rgba(74,222,128,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(74,222,128,0.3) 1px, transparent 1px)',
-        backgroundSize: '60px 60px'
+        backgroundSize: '40px 40px'
       }} />
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl px-6">
+      <div className="relative z-10 max-w-5xl w-full">
         {/* Main Headline */}
         <h1>
           <span
             ref={line1Ref}
-            className="block font-heading font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-tight-custom leading-[0.95] opacity-0"
+            className="block font-heading font-extrabold text-[28px] sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-tight-custom leading-[1.1] opacity-0"
           >
             O SEU FUTURO NÃO ESPERA.
           </span>
           <span
             ref={line2Ref}
-            className="block font-mono font-bold italic text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-accent tracking-tight-custom leading-[0.95] mt-2 text-glow opacity-0"
+            className="block font-mono font-bold italic text-3xl sm:text-6xl md:text-7xl lg:text-8xl text-accent tracking-tight-custom leading-[1.1] sm:leading-[0.95] mt-4 sm:mt-2 text-glow opacity-0"
           >
             ELE SE CONSTRÓI HOJE.
           </span>
