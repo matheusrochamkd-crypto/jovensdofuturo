@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { enrichLeadData } from '../lib/gemini'
 import {
   Users, TrendingUp, MapPin, Briefcase, CalendarDays,
   RefreshCw, Shield, ChevronLeft, Search, Eye, X,
   UserCheck, Clock, BarChart3, Globe, Linkedin, Phone, Mail,
-  ChevronDown, ChevronUp
+  ChevronDown, ChevronUp, Sparkles, Instagram, ExternalLink,
+  Target, Award
 } from 'lucide-react'
 import { getCandidates } from '../lib/supabase'
 
@@ -17,7 +19,7 @@ const genderLabels = {
 
 export default function Admin() {
   const navigate = useNavigate()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true) // Desabilitado conforme pedido
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState(false)
   const [candidates, setCandidates] = useState([])
@@ -166,6 +168,26 @@ export default function Admin() {
     } catch (err) {
       console.error('Error sending ticket:', err)
       alert('Erro ao enviar e-mail. Verifique os logs.')
+    }
+    setActionLoading(null)
+  }
+
+  const handleEnrich = async (candidate) => {
+    setActionLoading('enrich')
+    try {
+      // Removendo simulação hardcoded para evitar links errados.
+      // O Gemini tentará usar seu conhecimento ou processar apenas os dados reais.
+      const enrichment = await enrichLeadData(candidate, "")
+      
+      if (enrichment) {
+        const { enrichCandidate } = await import('../lib/supabase')
+        const updated = await enrichCandidate(candidate.id, enrichment)
+        await fetchCandidates()
+        setSelectedCandidate(updated)
+      }
+    } catch (err) {
+      console.error('Error enriching lead:', err)
+      alert('Erro ao enriquecer lead.')
     }
     setActionLoading(null)
   }
@@ -582,7 +604,92 @@ export default function Admin() {
                   {actionLoading === 'email' ? 'Enviando...' : 'Enviar Golden Ticket'}
                 </button>
               )}
+              <button
+                onClick={() => handleEnrich(selectedCandidate)}
+                disabled={actionLoading === 'enrich'}
+                className="btn-magnetic flex items-center gap-2 px-6 py-2.5 text-[10px] bg-gradient-to-r from-accent to-emerald-500 text-deep-slate font-bold hover:scale-[1.05] transition-transform"
+              >
+                {actionLoading === 'enrich' ? (
+                  <RefreshCw className="w-3 h-3 animate-spin" />
+                ) : (
+                  <Sparkles className="w-3 h-3" />
+                )}
+                {actionLoading === 'enrich' ? 'Enriquecendo...' : 'Enriquecer com IA'}
+              </button>
             </div>
+
+            {/* AI Enrichment Data Section */}
+            {selectedCandidate.enrichment_data && Object.keys(selectedCandidate.enrichment_data).length > 0 && (
+              <div className="mb-8 p-6 rounded-[1.5rem] bg-accent/5 border border-accent/10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4">
+                  <Sparkles className="w-8 h-8 text-accent/10" />
+                </div>
+                <h4 className="flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-4">
+                  <Target className="w-4 h-4" /> Inteligência do Lead
+                </h4>
+                
+                <div className="space-y-4">
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex-1 min-w-[200px]">
+                      <span className="text-[10px] text-accent/40 uppercase block mb-1">Score de Fit</span>
+                      <div className="flex items-center gap-3">
+                        <div className="h-2 flex-1 bg-white/5 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-accent rounded-full" 
+                            style={{ width: `${(selectedCandidate.enrichment_data.fit_score || 0) * 10}%` }} 
+                          />
+                        </div>
+                        <span className="text-accent font-bold text-lg">
+                          {selectedCandidate.enrichment_data.fit_score}/10
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <span className="text-[9px] text-accent/40 uppercase block">Resumo do Perfil</span>
+                      <p className="text-zinc-300 text-xs leading-relaxed italic">
+                        "{selectedCandidate.enrichment_data.summary}"
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-[9px] text-accent/40 uppercase block">Interesses & Tópicos</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {selectedCandidate.enrichment_data.interests?.map((tag, idx) => (
+                          <span key={idx} className="px-2 py-0.5 rounded-md bg-accent/10 text-accent text-[9px] border border-accent/20">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-accent/10 flex items-center gap-6">
+                    {selectedCandidate.enrichment_data.linkedin_url && (
+                      <a 
+                        href={selectedCandidate.enrichment_data.linkedin_url.startsWith('http') ? selectedCandidate.enrichment_data.linkedin_url : `https://${selectedCandidate.enrichment_data.linkedin_url}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 transition-colors text-[10px]"
+                      >
+                        <Linkedin className="w-3.5 h-3.5" /> LinkedIn <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    )}
+                    {selectedCandidate.enrichment_data.instagram_handle && (
+                      <a 
+                        href={`https://instagram.com/${selectedCandidate.enrichment_data.instagram_handle.replace('@', '')}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 transition-colors text-[10px]"
+                      >
+                        <Instagram className="w-3.5 h-3.5" /> Instagram <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Info Grid */}
             <div className="grid grid-cols-2 gap-5 text-xs">

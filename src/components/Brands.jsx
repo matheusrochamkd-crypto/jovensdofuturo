@@ -37,11 +37,6 @@ export default function Brands() {
         
         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24">
           <img 
-            src="/logos/nutrimental.png" 
-            alt="Nutrimental" 
-            className="brand-logo h-16 md:h-24 object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500" 
-          />
-          <img 
             src="/logos/executive.png" 
             alt="Executive Gastronomia" 
             className="brand-logo h-20 md:h-28 object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 rounded-sm" 
@@ -49,6 +44,11 @@ export default function Brands() {
           <img 
             src="/logos/eletron.png" 
             alt="Eletron Digital" 
+            className="brand-logo h-16 md:h-24 object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500" 
+          />
+          <img 
+            src="/logos/nutrimental.png" 
+            alt="Nutrimental" 
             className="brand-logo h-16 md:h-24 object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500" 
           />
         </div>

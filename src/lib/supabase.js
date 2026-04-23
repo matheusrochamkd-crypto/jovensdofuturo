@@ -44,6 +44,21 @@ export const updateCandidateStatus = async (id, status) => {
   return data
 }
 
+export const enrichCandidate = async (id, enrichmentData) => {
+  const { data, error } = await supabase
+    .from('candidates')
+    .update({ 
+      enrichment_data: enrichmentData, 
+      updated_at: new Date().toISOString() 
+    })
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 // Send email via Edge Function
 export const sendEmail = async (type, candidateId) => {
   try {
