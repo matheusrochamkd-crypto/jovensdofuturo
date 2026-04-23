@@ -13,14 +13,7 @@ import Footer from '../components/Footer'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-deep-slate text-white selection:bg-accent/30">
-      {/* SVG Noise Filter Definition */}
-      <svg className="fixed pointer-events-none opacity-0">
-        <filter id="noise-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
-        </filter>
-      </svg>
-
+    <div className="min-h-screen bg-deep-slate text-white selection:bg-accent/30 overflow-x-hidden">
       <Navbar />
       <Hero />
       <Brands />
