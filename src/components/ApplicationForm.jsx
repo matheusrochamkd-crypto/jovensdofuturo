@@ -59,7 +59,7 @@ export default function ApplicationForm() {
       const payload = {
         ...form,
         age: form.age ? parseInt(form.age) : null,
-        status: 'approved',
+        status: 'pending',
       }
       const candidate = await submitCandidate(payload)
       
