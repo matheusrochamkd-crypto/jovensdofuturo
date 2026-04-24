@@ -19,9 +19,6 @@ const genderLabels = {
 
 export default function Admin() {
   const navigate = useNavigate()
-  const [isAuthenticated, setIsAuthenticated] = useState(true) // Desabilitado conforme pedido
-  const [password, setPassword] = useState('')
-  const [authError, setAuthError] = useState(false)
   const [candidates, setCandidates] = useState([])
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(null)
@@ -29,24 +26,6 @@ export default function Admin() {
   const [selectedCandidate, setSelectedCandidate] = useState(null)
   const [sortField, setSortField] = useState('created_at')
   const [sortDir, setSortDir] = useState('desc')
-
-  const handleLogin = (e) => {
-    e.preventDefault()
-    // Simple but effective gatekeeper for the event
-    if (password === 'SJP-FUTURO-2026') {
-      setIsAuthenticated(true)
-      localStorage.setItem('admin_auth', 'true')
-    } else {
-      setAuthError(true)
-      setTimeout(() => setAuthError(false), 2000)
-    }
-  }
-
-  useEffect(() => {
-    if (localStorage.getItem('admin_auth') === 'true') {
-      setIsAuthenticated(true)
-    }
-  }, [])
 
   const fetchCandidates = async () => {
     setLoading(true)
@@ -190,48 +169,6 @@ export default function Admin() {
       alert('Erro ao enriquecer lead.')
     }
     setActionLoading(null)
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-deep-slate flex items-center justify-center p-6 font-mono">
-        <div className="absolute inset-0 bg-accent/5 blur-[120px]" />
-        <div className="card-surface p-8 w-full max-w-md relative z-10 border-accent/20">
-          <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-4">
-              <Shield className="w-8 h-8 text-accent" />
-            </div>
-            <h1 className="font-heading font-bold text-xl text-white uppercase tracking-widest">
-              Acesso Restrito
-            </h1>
-            <p className="text-zinc-500 text-xs mt-2">
-              Digite o código de acesso para entrar n'O CÉREBRO.
-            </p>
-          </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="PASSWORD_PROTOCOL"
-                className={`input-elite text-center tracking-[0.5em] ${authError ? 'border-red-500 shadow-red-500/20' : ''}`}
-                autoFocus
-              />
-            </div>
-            <button type="submit" className="btn-magnetic btn-primary w-full py-4">
-              Autenticar
-            </button>
-            {authError && (
-              <p className="text-red-500 text-[10px] text-center">
-                ACESSO NEGADO. TENTE NOVAMENTE.
-              </p>
-            )}
-          </form>
-        </div>
-      </div>
-    )
   }
 
   const BarChart = ({ data, color = 'bg-accent', maxItems = 5 }) => {
