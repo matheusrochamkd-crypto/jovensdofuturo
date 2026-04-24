@@ -7,8 +7,8 @@
 export async function enrichLeadData(candidate, searchResults) {
   const apiKey = "AIzaSyCODvQqqnB3-chhBN1luPEBqa_doK3_Zqo";
   
-  // Usando 'gemini-flash-latest' que apareceu na listagem oficial da chave
-  const model = "gemini-flash-latest"; 
+  // Usando 'gemini-1.5-flash' como modelo estável
+  const model = "gemini-1.5-flash"; 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const prompt = `

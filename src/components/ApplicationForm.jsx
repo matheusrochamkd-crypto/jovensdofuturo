@@ -63,16 +63,14 @@ export default function ApplicationForm() {
       }
       const candidate = await submitCandidate(payload)
       
-      // Automatic Enrichment after submission
-      try {
-        const enrichment = await enrichLeadData(candidate, "")
+      // Automatic Enrichment after submission (Non-blocking background process)
+      enrichLeadData(candidate, "").then(enrichment => {
         if (enrichment) {
-          await enrichCandidate(candidate.id, enrichment)
+          enrichCandidate(candidate.id, enrichment).catch(e => console.error('Background enrichment save failed:', e));
         }
-      } catch (enrichErr) {
-        console.warn('Enrichment background failed:', enrichErr)
-        // Non-blocking error, we still show success for the submission
-      }
+      }).catch(enrichErr => {
+        console.warn('Enrichment background process failed:', enrichErr);
+      });
 
       // Try sending confirmation email
       await sendEmail('application_received', candidate.id)
@@ -111,7 +109,7 @@ export default function ApplicationForm() {
         {/* Header */}
         <div className="text-center mb-12">
           <span className="font-mono text-xs text-accent tracking-[0.3em] uppercase block mb-4">
-            SUBMETA SUA CANDIDATURA
+            SUBMETE SUA CANDIDATURA
           </span>
           <h2 className="font-heading font-extrabold text-3xl md:text-5xl text-white tracking-tight-custom">
             Candidatura
