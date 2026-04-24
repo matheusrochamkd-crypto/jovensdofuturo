@@ -246,6 +246,4 @@ export default function Protocol() {
       </div>
     </section>
   )
-} </section>
-  )
 }
