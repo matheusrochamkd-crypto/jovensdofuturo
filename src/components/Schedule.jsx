@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Clock, Coffee, Lightbulb, Zap, BarChart3, Trophy } from 'lucide-react'
+import { Clock, Coffee, Lightbulb, Zap, BarChart3, Trophy, Users } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,24 +14,31 @@ const scheduleItems = [
   },
   {
     time: '19:00',
-    title: 'Liderança que Abre Portas',
+    title: 'Olhar de empreendedora',
     mentor: 'Miriam Ferreira',
     description: 'Como se posicionar como um líder talentoso e despertar o interesse dos grandes tomadores de decisão.',
     icon: Lightbulb,
   },
   {
-    time: '19:40',
+    time: '19:30',
     title: 'IA: Sua Vantagem Competitiva',
     mentor: 'Matheus Binotti',
     description: 'Aprenda a dominar as ferramentas que vão multiplicar sua produtividade e te colocar anos à frente da concorrência.',
     icon: Zap,
   },
   {
-    time: '20:20',
-    title: 'O Olhar de Quem Contrata',
+    time: '20:00',
+    title: 'A voz da indústria',
     mentor: 'Robson Alves',
     description: 'Os bastidores das grandes indústrias e o mapa exato do que o mercado de São José dos Pinhais busca hoje.',
     icon: BarChart3,
+  },
+  {
+    time: '20:30',
+    title: 'Futuro em Debate',
+    mentor: 'Miriam Ferreira, Matheus Binotti e Robson Alves',
+    description: 'Uma conversa aberta entre os mentores e o público. O momento de tirar dúvidas, aprofundar conceitos e trocar experiências reais.',
+    icon: Users,
   },
   {
     time: '21:00',

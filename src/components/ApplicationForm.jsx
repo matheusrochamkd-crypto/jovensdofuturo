@@ -18,6 +18,7 @@ const initialForm = {
   area: '',
   linkedin: '',
   justification: '',
+  lgpd_consent: false,
 }
 
 export default function ApplicationForm() {
@@ -45,7 +46,8 @@ export default function ApplicationForm() {
   }, [])
 
   const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value, type, checked } = e.target
+    setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
   const handleSubmit = async (e) => {
@@ -99,6 +101,7 @@ export default function ApplicationForm() {
       area: 'Tecnologia',
       linkedin: 'https://www.linkedin.com/in/matheus-binotti-964150259/',
       justification: 'Sou apaixonado por tecnologia e liderança. Acredito que o evento Jovens do Futuro é a oportunidade perfeita para conectar minha visão de IA aplicada com líderes do mercado regional.',
+      lgpd_consent: true,
     })
   }
 
@@ -315,6 +318,24 @@ export default function ApplicationForm() {
                   placeholder="O futuro não é sorte, é seleção. Conte-nos por que você merece estar entre os 50 selecionados..."
                   rows={4}
                 />
+              </div>
+
+              {/* LGPD Consent */}
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-deep-slate border border-accent/10 hover:border-accent/20 transition-colors group">
+                <div className="relative flex items-center h-5">
+                  <input
+                    id="lgpd_consent"
+                    name="lgpd_consent"
+                    type="checkbox"
+                    checked={form.lgpd_consent}
+                    onChange={handleChange}
+                    required
+                    className="w-4 h-4 rounded border-accent/20 bg-black/40 text-accent focus:ring-accent focus:ring-offset-deep-slate transition-all cursor-pointer"
+                  />
+                </div>
+                <label htmlFor="lgpd_consent" className="text-[10px] md:text-xs text-zinc-400 leading-relaxed cursor-pointer select-none group-hover:text-zinc-300 transition-colors">
+                  Confirmo que li e aceito que meus dados sejam processados conforme a <span className="text-accent/80">Lei Geral de Proteção de Dados (LGPD)</span> para fins de seleção e contato referente ao evento Jovens do Futuro. *
+                </label>
               </div>
 
               {/* Error */}

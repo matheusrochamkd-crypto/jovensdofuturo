@@ -41,10 +41,6 @@ export default function Footer() {
           <p className="font-mono text-[10px] text-zinc-700">
             © 2025 Eletron Digital. Todos os direitos reservados.
           </p>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-accent/30" />
-            <span className="font-mono text-[10px] text-accent/30">CONEXÃO ATIVA</span>
-          </div>
         </div>
       </div>
     </footer>
