@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
-import { submitCandidate, sendEmail, enrichCandidate } from '../lib/supabase'
-import { enrichLeadData } from '../lib/gemini'
+import { submitCandidate, sendEmail } from '../lib/supabase'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -63,15 +62,6 @@ export default function ApplicationForm() {
       }
       const candidate = await submitCandidate(payload)
       
-      // Automatic Enrichment after submission (Non-blocking background process)
-      enrichLeadData(candidate, "").then(enrichment => {
-        if (enrichment) {
-          enrichCandidate(candidate.id, enrichment).catch(e => console.error('Background enrichment save failed:', e));
-        }
-      }).catch(enrichErr => {
-        console.warn('Enrichment background process failed:', enrichErr);
-      });
-
       // Try sending confirmation email
       await sendEmail('application_received', candidate.id)
       setStatus('success')
