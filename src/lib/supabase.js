@@ -49,20 +49,19 @@ export const updateCandidateStatus = async (id, status) => {
 // Send email via Edge Function
 export const sendEmail = async (type, candidateId) => {
   try {
-    const res = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, candidateId }),
+    const { data, error } = await supabase.functions.invoke('send-email', {
+      body: { type, candidateId }
     })
-    const data = await res.json()
-    if (!res.ok) {
-      console.error('[Email] Failed:', data)
+    
+    if (error) {
+      console.error('[Email] Edge Function error:', error)
       return null
     }
+
     console.log('[Email] Sent successfully:', data)
     return data
   } catch (err) {
-    console.warn('[Email] Error:', err.message)
+    console.warn('[Email] Network/Fetch error:', err.message)
     return null
   }
 }

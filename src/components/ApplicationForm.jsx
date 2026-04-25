@@ -60,19 +60,31 @@ export default function ApplicationForm() {
         age: form.age ? parseInt(form.age) : null,
         status: 'pending',
       }
-      const candidate = await submitCandidate(payload)
       
-      // Try sending confirmation email
-      await sendEmail('application_received', candidate.id)
+      const candidate = await submitCandidate(payload)
+      console.log('Candidate submitted:', candidate)
+
+      // Try sending confirmation email - but don't block success UI if it fails
+      try {
+        await sendEmail('application_received', candidate.id)
+      } catch (emailErr) {
+        console.warn('Failed to send confirmation email:', emailErr)
+      }
+
       setStatus('success')
       setForm(initialForm)
     } catch (err) {
       console.error('Submit error:', err)
       setStatus('error')
-      if (err.message?.includes('duplicate')) {
-        setErrorMsg('Este e-mail já foi cadastrado.')
+      
+      const errorMessage = err.message || ''
+      
+      if (errorMessage.includes('Failed to fetch')) {
+        setErrorMsg('Erro de conexão com o servidor. Verifique sua internet ou tente novamente em instantes.')
+      } else if (errorMessage.includes('duplicate')) {
+        setErrorMsg('Este e-mail já foi cadastrado em nosso protocolo.')
       } else {
-        setErrorMsg(err.message || 'Erro ao enviar candidatura. Tente novamente.')
+        setErrorMsg(errorMessage || 'Erro inesperado ao enviar candidatura. Protocolo interrompido.')
       }
     }
   }
