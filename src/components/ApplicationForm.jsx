@@ -89,21 +89,6 @@ export default function ApplicationForm() {
     }
   }
 
-  const fillTestData = () => {
-    setForm({
-      full_name: 'Matheus Binotti Rocha',
-      email: 'matheusbinottir@gmail.com',
-      phone: '(41) 99999-0000',
-      age: '24',
-      gender: 'masculino',
-      city: 'São José dos Pinhais',
-      institution: 'Eletron Digital',
-      area: 'Tecnologia',
-      linkedin: 'https://www.linkedin.com/in/matheus-binotti-964150259/',
-      justification: 'Sou apaixonado por tecnologia e liderança. Acredito que o evento Jovens do Futuro é a oportunidade perfeita para conectar minha visão de IA aplicada com líderes do mercado regional.',
-      lgpd_consent: true,
-    })
-  }
 
   return (
     <section id="application-form" ref={sectionRef} className="section-padding">
@@ -123,16 +108,6 @@ export default function ApplicationForm() {
 
         {/* Form */}
         <div ref={formRef} className="card-surface p-8 md:p-12">
-          {/* DEV: Test Button - Moved inside and below header */}
-          <div className="mb-8 flex justify-end">
-            <button
-              type="button"
-              onClick={fillTestData}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-mono hover:bg-amber-500/20 transition-colors"
-            >
-              ⚡ Preencher dados de teste
-            </button>
-          </div>
 
           {status === 'success' ? (
             <div className="text-center py-12">
