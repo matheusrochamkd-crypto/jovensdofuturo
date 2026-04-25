@@ -32,17 +32,7 @@ export const getCandidates = async (statusFilter = null) => {
   return data
 }
 
-export const updateCandidateStatus = async (id, status) => {
-  const { data, error } = await supabase
-    .from('candidates')
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq('id', id)
-    .select()
-    .single()
 
-  if (error) throw error
-  return data
-}
 
 
 

@@ -122,33 +122,45 @@ export default function Admin() {
     return sortDir === 'asc' ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />
   }
 
-  // ─── BAR HELPER ──────────────────────────────────────────────
-  const handleStatusUpdate = async (id, status) => {
-    setActionLoading(status)
-    try {
-      const { updateCandidateStatus } = await import('../lib/supabase')
-      await updateCandidateStatus(id, status)
-      await fetchCandidates()
-      if (selectedCandidate) {
-        setSelectedCandidate(prev => ({ ...prev, status }))
-      }
-    } catch (err) {
-      console.error('Error updating status:', err)
-    }
-    setActionLoading(null)
-  }
+  const handleExportCSV = () => {
+    if (candidates.length === 0) return
 
-  const handleSendTicket = async (id) => {
-    setActionLoading('email')
-    try {
-      const { sendEmail } = await import('../lib/supabase')
-      await sendEmail('golden_ticket', id)
-      alert('Golden Ticket enviado com sucesso!')
-    } catch (err) {
-      console.error('Error sending ticket:', err)
-      alert('Erro ao enviar e-mail. Verifique os logs.')
-    }
-    setActionLoading(null)
+    // Define headers
+    const headers = [
+      'Nome Completo', 'Email', 'Telefone', 'Idade', 'Gênero', 'Cidade', 
+      'Instituição/Empresa', 'Área', 'LinkedIn', 'Justificativa', 'Inscrito em'
+    ]
+
+    // Map data to rows
+    const rows = candidates.map(c => [
+      c.full_name,
+      c.email,
+      c.phone,
+      c.age || '',
+      genderLabels[c.gender] || c.gender || '',
+      c.city || '',
+      c.institution || '',
+      c.area || '',
+      c.linkedin || '',
+      `"${(c.justification || '').replace(/"/g, '""')}"`, // Escape quotes and wrap in quotes
+      new Date(c.created_at).toLocaleString('pt-BR')
+    ])
+
+    // Build CSV content
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.join(','))
+    ].join('\n')
+
+    // Create and trigger download
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `candidatos_jovens_do_futuro_${new Date().toISOString().split('T')[0]}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
 
 
@@ -195,6 +207,13 @@ export default function Admin() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center gap-2 text-xs text-white bg-accent/20 hover:bg-accent/30 transition-colors px-3 py-1.5 rounded-lg border border-accent/20"
+            >
+              <Globe className="w-3.5 h-3.5 text-accent" />
+              Baixar Planilha (CSV)
+            </button>
             <button
               onClick={fetchCandidates}
               className="flex items-center gap-2 text-xs text-zinc-400 hover:text-accent transition-colors px-3 py-1.5 rounded-lg border border-accent/10 hover:border-accent/30"
@@ -498,32 +517,10 @@ export default function Admin() {
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-wrap gap-3 mb-8 pb-8 border-b border-accent/5">
-              <button
-                onClick={() => handleStatusUpdate(selectedCandidate.id, 'aprovado')}
-                disabled={actionLoading === 'aprovado'}
-                className={`btn-magnetic px-6 py-2.5 text-[10px] ${selectedCandidate.status === 'aprovado' ? 'bg-accent text-deep-slate opacity-50 cursor-not-allowed' : 'btn-primary'}`}
-              >
-                {actionLoading === 'aprovado' ? 'Processando...' : 'Aprovar'}
-              </button>
-              <button
-                onClick={() => handleStatusUpdate(selectedCandidate.id, 'rejeitado')}
-                disabled={actionLoading === 'rejeitado'}
-                className="btn-magnetic btn-outline px-6 py-2.5 text-[10px] border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white"
-              >
-                {actionLoading === 'rejeitado' ? 'Processando...' : 'Rejeitar'}
-              </button>
-              {selectedCandidate.status === 'aprovado' && (
-                <button
-                  onClick={() => handleSendTicket(selectedCandidate.id)}
-                  disabled={actionLoading === 'email'}
-                  className="btn-magnetic btn-outline px-6 py-2.5 text-[10px] border-accent/30 text-accent"
-                >
-                  {actionLoading === 'email' ? 'Enviando...' : 'Enviar Golden Ticket'}
-                </button>
-              )}
-
+            {/* Candidate Details Title */}
+            <div className="flex items-center gap-2 mb-6 text-[10px] text-accent font-mono uppercase tracking-widest border-b border-accent/5 pb-4">
+              <Users className="w-4 h-4" />
+              Informações Completas do Participante
             </div>
 
 
