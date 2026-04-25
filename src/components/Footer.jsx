@@ -18,15 +18,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Center */}
-          <div className="text-center">
-            <p className="font-mono text-xs text-zinc-500">
-              São José dos Pinhais, PR — 2025
-            </p>
-            <p className="font-mono text-[10px] text-accent/30 mt-1">
-              Seleção Exclusiva
-            </p>
-          </div>
 
           {/* Right */}
           <div className="text-right">
