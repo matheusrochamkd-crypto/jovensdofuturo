@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 const scheduleItems = [
   {
     time: '18:30',
-    title: 'Credenciamento e Networking',
+    title: 'Receptivo, Coffee e Networking',
     description: 'O início da sua jornada. Conecte-se com outros jovens visionários e comece a construir sua rede antes mesmo da primeira palestra.',
     icon: Coffee,
   },
