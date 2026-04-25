@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Instagram } from 'lucide-react'
 
 const prompts = [
   '> Analisando mercado regional...',
@@ -70,9 +71,19 @@ export default function TelemetryTypewriter() {
         <img src="/speakers/matheus.jpg" alt="Matheus Binotti" className="w-16 h-16 rounded-full object-cover border-2 border-accent/20" />
         <div>
           <span className="font-mono text-xs text-zinc-500">02 — TECNOLOGIA</span>
-          <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom mt-1">
-            Matheus Binotti
-          </h3>
+          <div className="flex items-center gap-2 mt-1">
+            <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom">
+              Matheus Binotti
+            </h3>
+            <a 
+              href="https://www.instagram.com/matheus_binotti/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-accent hover:scale-110 transition-transform duration-300"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
           <p className="font-body text-[10px] leading-tight text-zinc-400 mt-2 max-w-[200px]">
             Especialista em IA na prática. Vai te mostrar como usar a tecnologia como sua principal aliada para se destacar e ganhar tempo.
           </p>

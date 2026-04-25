@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Instagram } from 'lucide-react'
 
 const nodes = [
   { x: 60, y: 40, label: 'Estratégia' },
@@ -117,9 +118,19 @@ export default function ProtocolScheduler() {
         <img src="/speakers/robson.jpg" alt="Robson Alves" className="w-16 h-16 rounded-full object-cover border-2 border-accent/20" />
         <div>
           <span className="font-mono text-xs text-zinc-500">03 — MERCADO</span>
-          <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom mt-1">
-            Robson Alves
-          </h3>
+          <div className="flex items-center gap-2 mt-1">
+            <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom">
+              Robson Alves
+            </h3>
+            <a 
+              href="https://www.instagram.com/robson_paes81/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-accent hover:scale-110 transition-transform duration-300"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
           <p className="font-body text-[10px] leading-tight text-zinc-400 mt-2 max-w-[200px]">
             Com quase 30 anos de experiência na Nutrimental, Robson traz a bagagem de quem sabe exatamente o que as grandes empresas esperam da nova geração.
           </p>

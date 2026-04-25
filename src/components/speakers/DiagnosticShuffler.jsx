@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Handshake, FileSignature, Crown } from 'lucide-react'
+import { Handshake, FileSignature, Crown, Instagram } from 'lucide-react'
 
 const layers = [
   {
@@ -50,9 +50,19 @@ export default function DiagnosticShuffler() {
         <img src="/speakers/miriam.png" alt="Miriam Ferreira" className="w-16 h-16 rounded-full object-cover border-2 border-accent/20" />
         <div>
           <span className="font-mono text-xs text-zinc-500">01 — LIDERANÇA</span>
-          <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom mt-1">
-            Miriam Ferreira
-          </h3>
+          <div className="flex items-center gap-2 mt-1">
+            <h3 className="font-heading font-bold text-xl text-white tracking-tight-custom">
+              Miriam Ferreira
+            </h3>
+            <a 
+              href="https://www.instagram.com/miriam_ferreira/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-accent hover:scale-110 transition-transform duration-300"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
           <p className="font-body text-[10px] leading-tight text-zinc-400 mt-2 max-w-[200px]">
             Empresária visionária e fundadora do Executive. Especialista em liderança com paixão por abrir portas para jovens talentos.
           </p>
