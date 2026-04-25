@@ -48,7 +48,6 @@ export const sendEmail = async (type, candidateId) => {
       return null
     }
 
-    console.log('[Email] Sent successfully:', data)
     return data
   } catch (err) {
     console.warn('[Email] Network/Fetch error:', err.message)

@@ -62,7 +62,6 @@ export default function ApplicationForm() {
       }
       
       const candidate = await submitCandidate(payload)
-      console.log('Candidate submitted:', candidate)
 
       // Try sending confirmation email - but don't block success UI if it fails
       try {
