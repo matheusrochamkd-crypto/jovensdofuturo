@@ -15,7 +15,6 @@ const initialForm = {
   city: '',
   institution: '',
   area: '',
-  linkedin: '',
   justification: '',
   lgpd_consent: false,
 }
@@ -263,20 +262,6 @@ export default function ApplicationForm() {
                 </div>
               </div>
 
-              {/* LinkedIn */}
-              <div>
-                <label className="font-mono text-[10px] text-accent/60 uppercase tracking-[0.15em] block mb-2">
-                  LinkedIn (opcional)
-                </label>
-                <input
-                  type="url"
-                  name="linkedin"
-                  value={form.linkedin}
-                  onChange={handleChange}
-                  className="input-elite"
-                  placeholder="https://linkedin.com/in/seu-perfil"
-                />
-              </div>
 
               {/* Justification */}
               <div>

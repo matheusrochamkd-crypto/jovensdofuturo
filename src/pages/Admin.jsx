@@ -128,7 +128,7 @@ export default function Admin() {
     // Define headers
     const headers = [
       'Nome Completo', 'Email', 'Telefone', 'Idade', 'Gênero', 'Cidade', 
-      'Instituição/Empresa', 'Área', 'LinkedIn', 'Justificativa', 'Inscrito em'
+      'Instituição/Empresa', 'Área', 'Justificativa', 'Inscrito em'
     ]
 
     // Map data to rows
@@ -141,7 +141,6 @@ export default function Admin() {
       c.city || '',
       c.institution || '',
       c.area || '',
-      c.linkedin || '',
       `"${(c.justification || '').replace(/"/g, '""')}"`, // Escape quotes and wrap in quotes
       new Date(c.created_at).toLocaleString('pt-BR')
     ])
@@ -571,16 +570,6 @@ export default function Admin() {
                   })}
                 </p>
               </div>
-              {selectedCandidate.linkedin && (
-                <div className="col-span-2 space-y-1">
-                  <span className="text-accent/30 uppercase tracking-wider text-[9px] flex items-center gap-1.5">
-                    <Linkedin className="w-3 h-3" /> LinkedIn
-                  </span>
-                  <a href={selectedCandidate.linkedin} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline break-all">
-                    {selectedCandidate.linkedin}
-                  </a>
-                </div>
-              )}
               <div className="col-span-2 space-y-1 pt-4 border-t border-accent/5">
                 <span className="text-accent/30 uppercase tracking-wider text-[9px]">Justificativa</span>
                 <p className="text-zinc-300 leading-relaxed font-body">{selectedCandidate.justification || '—'}</p>
