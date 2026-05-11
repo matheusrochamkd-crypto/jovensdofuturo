@@ -6,9 +6,9 @@ import {
   RefreshCw, Shield, ChevronLeft, Search, Eye, X,
   UserCheck, Clock, BarChart3, Globe, Linkedin, Phone, Mail,
   ChevronDown, ChevronUp, Sparkles, Instagram, ExternalLink,
-  Target, Award
+  Target, Award, Send, CheckCircle, AlertCircle, Loader2, MessageSquare
 } from 'lucide-react'
-import { getCandidates } from '../lib/supabase'
+import { getCandidates, supabase } from '../lib/supabase'
 
 const genderLabels = {
   masculino: 'Masculino',
@@ -26,6 +26,11 @@ export default function Admin() {
   const [selectedCandidate, setSelectedCandidate] = useState(null)
   const [sortField, setSortField] = useState('created_at')
   const [sortDir, setSortDir] = useState('desc')
+
+  // ─── BULK EMAIL STATE ──────────────────────────────────────────
+  const [bulkStep, setBulkStep] = useState('idle') // idle | sending_test | test_sent | sending_all | done | error
+  const [bulkResult, setBulkResult] = useState(null)
+  const [bulkError, setBulkError] = useState('')
 
   const fetchCandidates = async () => {
     setLoading(true)
@@ -246,6 +251,139 @@ export default function Admin() {
               <span className={`text-4xl font-bold ${stat.color} font-heading`}>{stat.value}</span>
             </div>
           ))}
+        </div>
+
+        {/* ─── BULK EMAIL PANEL ───────────────────────────────── */}
+        <div className="bg-surface rounded-[2rem] border border-accent/10 p-6 mb-8 relative overflow-hidden">
+          {/* Background glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none rounded-[2rem]" />
+
+          <div className="relative flex flex-col md:flex-row md:items-center gap-6">
+            {/* Left: info */}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <MessageSquare className="w-4 h-4 text-accent" />
+                <span className="text-[10px] text-accent/60 uppercase tracking-widest font-mono">Disparo de Convite — WhatsApp</span>
+              </div>
+              <h3 className="text-white font-heading font-bold text-lg mb-1">
+                Enviar Convite para Todos os Inscritos
+              </h3>
+              <p className="text-xs text-zinc-500 leading-relaxed max-w-lg">
+                Envia o e-mail de confirmação com o link do grupo de WhatsApp para{' '}
+                <span className="text-accent font-semibold">{metrics.total} inscritos</span>.
+                {' '}Primeiro, um e-mail de teste será enviado para{' '}
+                <span className="text-zinc-300">matheusbinottir@gmail.com</span>{' '}para sua aprovação.
+              </p>
+
+              {/* Status messages */}
+              {bulkStep === 'test_sent' && (
+                <div className="mt-3 flex items-center gap-2 text-amber-400 text-xs bg-amber-400/10 border border-amber-400/20 rounded-xl px-4 py-2.5">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  <span>E-mail de teste enviado para <strong>matheusbinottir@gmail.com</strong>. Verifique sua caixa e clique em <strong>"Confirmar e Enviar para Todos"</strong> para disparar para os {metrics.total} inscritos.</span>
+                </div>
+              )}
+              {bulkStep === 'done' && bulkResult && (
+                <div className="mt-3 flex items-center gap-2 text-accent text-xs bg-accent/10 border border-accent/20 rounded-xl px-4 py-2.5">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  <span>✅ Disparado com sucesso! <strong>{bulkResult.successCount}</strong> enviados · <strong>{bulkResult.failCount}</strong> falhas · <strong>{bulkResult.total}</strong> total.</span>
+                </div>
+              )}
+              {bulkStep === 'error' && (
+                <div className="mt-3 flex items-center gap-2 text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-xl px-4 py-2.5">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>Erro: {bulkError}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Right: action buttons */}
+            <div className="flex flex-col gap-3 shrink-0">
+              {/* Step 1: Send test */}
+              {(bulkStep === 'idle' || bulkStep === 'error') && (
+                <button
+                  onClick={async () => {
+                    setBulkStep('sending_test')
+                    setBulkError('')
+                    try {
+                      const { data, error } = await supabase.functions.invoke('send-email', {
+                        body: {
+                          type: 'event_confirmation',
+                          overrideEmail: 'matheusbinottir@gmail.com',
+                          overrideName: 'Matheus',
+                        }
+                      })
+                      if (error) throw new Error(error.message)
+                      if (data?.error) throw new Error(data.error)
+                      setBulkStep('test_sent')
+                    } catch (err) {
+                      setBulkStep('error')
+                      setBulkError(err.message || 'Falha no envio do teste')
+                    }
+                  }}
+                  className="flex items-center gap-2 px-5 py-3 rounded-xl bg-accent/20 border border-accent/30 text-accent text-sm font-semibold hover:bg-accent/30 transition-all"
+                >
+                  <Send className="w-4 h-4" />
+                  Enviar Teste para Mim
+                </button>
+              )}
+
+              {bulkStep === 'sending_test' && (
+                <button disabled className="flex items-center gap-2 px-5 py-3 rounded-xl bg-accent/10 border border-accent/10 text-accent/50 text-sm cursor-not-allowed">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Enviando teste...
+                </button>
+              )}
+
+              {/* Step 2: Confirm and send to all */}
+              {bulkStep === 'test_sent' && (
+                <>
+                  <button
+                    onClick={async () => {
+                      setBulkStep('sending_all')
+                      try {
+                        const { data, error } = await supabase.functions.invoke('send-email', {
+                          body: { type: 'event_confirmation', bulkMode: true }
+                        })
+                        if (error) throw new Error(error.message)
+                        if (data?.error) throw new Error(data.error)
+                        setBulkResult(data)
+                        setBulkStep('done')
+                      } catch (err) {
+                        setBulkStep('error')
+                        setBulkError(err.message || 'Falha no envio em massa')
+                      }
+                    }}
+                    className="flex items-center gap-2 px-5 py-3 rounded-xl bg-accent text-deep-slate text-sm font-bold hover:bg-accent/90 transition-all shadow-lg shadow-accent/20"
+                  >
+                    <CheckCircle className="w-4 h-4" />
+                    ✅ Confirmar e Enviar para Todos
+                  </button>
+                  <button
+                    onClick={() => setBulkStep('idle')}
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl border border-zinc-700 text-zinc-500 text-xs hover:text-zinc-300 transition-colors"
+                  >
+                    <X className="w-3 h-3" /> Cancelar
+                  </button>
+                </>
+              )}
+
+              {bulkStep === 'sending_all' && (
+                <button disabled className="flex items-center gap-2 px-5 py-3 rounded-xl bg-accent/10 border border-accent/10 text-accent/50 text-sm cursor-not-allowed">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Enviando para {metrics.total} inscritos...
+                </button>
+              )}
+
+              {bulkStep === 'done' && (
+                <button
+                  onClick={() => { setBulkStep('idle'); setBulkResult(null) }}
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl border border-accent/20 text-accent/60 text-xs hover:text-accent transition-colors"
+                >
+                  <RefreshCw className="w-3 h-3" /> Reiniciar
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* ─── ANALYTICS GRID ────────────────────────────────── */}
